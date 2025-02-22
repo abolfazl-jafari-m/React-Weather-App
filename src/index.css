@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+    --font-fuzzy : "fuzzy" , "sans-serif";
+}
+
+@font-face {
+    src: url("./assets/fonts/FuzzyBubbles-Regular.ttf");
+    font-family: "fuzzy";
+    font-weight: 400;
+}
+@font-face {
+    src: url("./assets/fonts/FuzzyBubbles-Bold.ttf");
+    font-family: "fuzzy";
+    font-weight: 700;
+}
