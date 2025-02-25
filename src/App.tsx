@@ -1,4 +1,5 @@
 import Router from "./Router/Router.tsx";
+import {LoadingProvider} from "./Context/LoadingContext.tsx";
 
 
 function App() {
@@ -6,7 +7,9 @@ function App() {
 
     return (
         <>
-          <Router />
+            <LoadingProvider>
+                <Router/>
+            </LoadingProvider>
         </>
     )
 }
