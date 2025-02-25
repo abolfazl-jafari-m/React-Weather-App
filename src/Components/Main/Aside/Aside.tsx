@@ -1,6 +1,5 @@
-
 import Input from "../../Base/Input/Input.tsx";
-import {KeyboardEvent, useContext} from "react";
+import {KeyboardEvent, useContext, useEffect} from "react";
 import {getWeather} from "../../../Services/Weather.ts";
 import {WeatherContext, WeatherContextInterFace} from "../../../Context/WeatherContext.tsx";
 import moment from "moment";
@@ -13,26 +12,34 @@ import compass from "/images/compass.svg";
 import thermometerColder from "/images/thermometer-colder.svg";
 import thermometerWarmer from "/images/thermometer-warmer.svg";
 import {LoadingContext, LoadingContextInterface} from "../../../Context/LoadingContext.tsx";
-
+import useUserLocation from "../../../Hooks/useUserLocation/useUserLocation.tsx";
 
 
 function Aside() {
     const {weather, setWeather} = useContext(WeatherContext) as WeatherContextInterFace
     const {setIsLoading} = useContext(LoadingContext) as LoadingContextInterface
+    const city = useUserLocation();
     const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            setIsLoading(true)
             getWeather((e.target as HTMLInputElement).value)
                 .then(res => {
                     setWeather(res)
                 })
-                .finally(()=>{
+                .finally(() => {
                     setIsLoading(false)
                 });
 
         }
     }
-
+    useEffect(() => {
+        if (city) {
+            getWeather(city as string)
+                .then(res => setWeather(res))
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        }
+    }, [city])
     return (
         <aside
             className={"col-span-3 bg-gray-300/20 backdrop-blur-md ring ring-white shadow-lg shadow-black flex flex-col gap-10 py-8 px-6 relative"}>
@@ -45,7 +52,9 @@ function Aside() {
                 </div>
             </div>
             <div>
-            <span className={"text-5xl  flex items-center gap-1 justify-center"}>{weather ? weather?.main?.temp : "-"} <img src={celsius} className={"w-12"} alt={"deg"}/></span>
+                <span
+                    className={"text-5xl  flex items-center gap-1 justify-center"}>{weather ? weather?.main?.temp : "-"}
+                    <img src={celsius} className={"w-12"} alt={"deg"}/></span>
             </div>
             <div className={"px-10 flex items-center justify-between"}>
                 <div className={"flex items-center gap-1"}>
@@ -80,7 +89,7 @@ function Aside() {
             <div className={"flex items-center justify-between px-6 mt-5"}>
                 <div className={"flex flex-col items-center gap-3"}>
                     <div className={"flex items-center gap-1.5"}>
-                    <h5 className={"text-lg opacity-60"}>Sunset</h5>
+                        <h5 className={"text-lg opacity-60"}>Sunset</h5>
                         <img src={sunset} className={"w-14"} alt={"sunset"}/>
                     </div>
                     <span>{weather ? moment(weather?.sys?.sunset * 1000).format('LT') : "-"}</span>

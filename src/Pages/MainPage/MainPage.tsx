@@ -1,6 +1,5 @@
 import Aside from "../../Components/Main/Aside/Aside.tsx";
 import Contents from "../../Components/Main/Content/Contents.tsx";
-
 import {WeatherProvider} from "../../Context/WeatherContext.tsx";
 import {useContext} from "react";
 import {LoadingContext, LoadingContextInterface} from "../../Context/LoadingContext.tsx";

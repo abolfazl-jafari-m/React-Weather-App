@@ -7,6 +7,7 @@ import {WeatherContext, WeatherContextInterFace} from "../../../Context/WeatherC
 
 function Contents() {
     const {weather} = useContext(WeatherContext) as WeatherContextInterFace
+
     return (
         <main className={"col-span-9  h-screen  flex flex-col p-5"}>
             <header className={'w-full flex items-center justify-between p-4'}>
