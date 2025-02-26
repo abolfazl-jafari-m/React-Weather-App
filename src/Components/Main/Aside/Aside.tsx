@@ -26,8 +26,10 @@ function Aside() {
             setIsLoading(true);
             getWeather((e.target as HTMLInputElement).value)
                 .then(res => {
+                    if (res){
+                    setTimezone(cityTimezone.lookupViaCity(res.name).find(item=>item.iso2 === res.sys.country)?.timezone ?? "Asia/Tehran")
+                    }
                     setWeather(res)
-                    setTimezone(cityTimezone.lookupViaCity(res.name)[0].timezone)
                 })
                 .finally(() => {
                     setIsLoading(false)
@@ -37,10 +39,11 @@ function Aside() {
     }
     useEffect(() => {
         if (city) {
+            setIsLoading(true);
             getWeather(city)
                 .then(res => {
                     setWeather(res)
-                    setTimezone(cityTimezone.lookupViaCity(res.name)[0].timezone)
+                    setTimezone(cityTimezone.lookupViaCity(res.name).find(item=>item.iso2 === res.sys.country)?.timezone ?? " Asia/Tehran")
                 })
                 .finally(() => {
                     setIsLoading(false)
@@ -86,7 +89,7 @@ function Aside() {
                 <div className={"flex items-center gap-1"}>
                     <img src={wind} alt={"wind"} className={"w-12"}/>
                     <div className={"flex flex-col gap-1"}>
-                        <h4 className={"text-2xl"}>{weather ? weather?.wind?.speed : "0"} km/h</h4>
+                        <h4 className={"text-2xl"}>{weather ? weather?.wind?.speed : "0"} m/h</h4>
                         <span className={"capitalize text-xs opacity-60"}>Wind Speed</span>
                     </div>
 
