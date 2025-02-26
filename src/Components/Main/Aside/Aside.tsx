@@ -68,11 +68,11 @@ function Aside() {
             </div>
             <div className={"px-10 flex items-center justify-between"}>
                 <div className={"flex items-center gap-1"}>
-                    <img src={thermometerWarmer} alt={"max-temp"} className={"w-10"}/>
+                    <img src={thermometerWarmer} alt={"max-temp"} className={"w-12"}/>
                     <span className={"flex items-center gap-1"}>{weather ? weather?.main?.temp_max : "-"} &deg;</span>
                 </div>
                 <div className={"flex items-center gap-1"}>
-                    <img src={thermometerColder} alt={"min-temp"} className={"w-10"}/>
+                    <img src={thermometerColder} alt={"min-temp"} className={"w-12"}/>
                     <span>{weather ? weather?.main?.temp_min : "-"} &deg;</span>
                 </div>
 

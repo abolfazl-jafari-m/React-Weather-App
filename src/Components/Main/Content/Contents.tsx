@@ -5,7 +5,6 @@ import {WeatherContext, WeatherContextInterFace} from "../../../Context/WeatherC
 import hail from "/images/hail.svg";
 import {WeatherInterFace} from "../../../Interfaces/weather.ts";
 import useLocalStorage from "../../../Hooks/useLocalStorage/useLocalStorage.ts";
-import {MdCurtainsClosed} from "react-icons/md";
 import {IoClose} from "react-icons/io5";
 
 
@@ -74,7 +73,7 @@ function Contents() {
                     favorites.map((favorite: WeatherInterFace)=>{
                         return <div key={favorite.name} className={"flex items-center justify-evenly  gap-5  bg-black/50 backdrop-blur-lg rounded-md shadow shadow-black py-2 px-6"}>
                             <h4>{favorite.name}</h4>
-                            <p>{favorite.main.temp}</p>
+                            <p>{favorite.main.temp} &deg;</p>
                             <img src={`https://openweathermap.org/img/wn/${favorite?.weather && favorite?.weather[0]?.icon}@2x.png`} className={"w-7"} alt={favorite?.weather ? favorite?.weather[0]?.main : "weather"}/>
                             <span
                                 className={"cursor-pointer"}
