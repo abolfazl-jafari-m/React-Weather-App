@@ -1,8 +1,8 @@
 import Input from "../../Base/Input/Input.tsx";
-import {KeyboardEvent, useContext, useEffect} from "react";
+import {KeyboardEvent, useContext, useEffect, useState} from "react";
 import {getWeather} from "../../../Services/Weather.ts";
 import {WeatherContext, WeatherContextInterFace} from "../../../Context/WeatherContext.tsx";
-import moment from "moment";
+import moment from "moment-timezone"
 import humidity from "/images/humidity.svg";
 import sunset from "/images/sunset.svg";
 import sunrise from "/images/sunrise.svg";
@@ -13,17 +13,21 @@ import thermometerColder from "/images/thermometer-colder.svg";
 import thermometerWarmer from "/images/thermometer-warmer.svg";
 import {LoadingContext, LoadingContextInterface} from "../../../Context/LoadingContext.tsx";
 import useUserLocation from "../../../Hooks/useUserLocation/useUserLocation.tsx";
+import cityTimezone from "city-timezones";
 
 
 function Aside() {
     const {weather, setWeather} = useContext(WeatherContext) as WeatherContextInterFace
     const {setIsLoading} = useContext(LoadingContext) as LoadingContextInterface
+    const [timezone, setTimezone] = useState<string>("");
     const city = useUserLocation();
     const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
+            setIsLoading(true);
             getWeather((e.target as HTMLInputElement).value)
                 .then(res => {
                     setWeather(res)
+                    setTimezone(cityTimezone.lookupViaCity(res.name)[0].timezone)
                 })
                 .finally(() => {
                     setIsLoading(false)
@@ -33,8 +37,11 @@ function Aside() {
     }
     useEffect(() => {
         if (city) {
-            getWeather(city as string)
-                .then(res => setWeather(res))
+            getWeather(city)
+                .then(res => {
+                    setWeather(res)
+                    setTimezone(cityTimezone.lookupViaCity(res.name)[0].timezone)
+                })
                 .finally(() => {
                     setIsLoading(false)
                 })
@@ -92,19 +99,20 @@ function Aside() {
                         <h5 className={"text-lg opacity-60"}>Sunset</h5>
                         <img src={sunset} className={"w-14"} alt={"sunset"}/>
                     </div>
-                    <span>{weather ? moment(weather?.sys?.sunset * 1000).format('LT') : "-"}</span>
+                    <span>{weather ? moment(weather?.sys?.sunset * 1000).tz(timezone).format('LT') : "-"}</span>
                 </div>
                 <div className={"flex flex-col items-center gap-3"}>
                     <div className={"flex items-center gap-4"}>
                         <h5 className={"text-lg opacity-60"}>Sunrise</h5>
                         <img src={sunrise} alt={"sunrise"} className={"w-14"}/>
                     </div>
-                    <span>{weather ? moment(weather?.sys?.sunrise * 1000).format('LT') : "-"}</span>
+                    <span>{weather ? moment(weather?.sys?.sunrise * 1000).tz(timezone).format('LT') : "-"}</span>
                 </div>
             </div>
-            <div className={"flex items-center justify-center gap-3"}>
+            <div className={"flex flex-col items-center justify-center gap-3"}>
                 <h4>TimeZone</h4>
-                <span>{weather ? moment(weather.timezone).format("HH:mm") : "-"}</span>
+
+                <span>{weather ? timezone +"  "+ moment(weather.timezone).tz(timezone).format("HH:mm") : "-"}</span>
             </div>
             <div className={"absolute bottom-2 left-2"}>
                 <span>NV Weather</span>
