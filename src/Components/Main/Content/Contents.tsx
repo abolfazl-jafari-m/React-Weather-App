@@ -13,10 +13,11 @@ import {useNavigate} from "react-router";
 import {FaLocationCrosshairs} from "react-icons/fa6";
 import axios from "axios";
 import {getWeather} from "../../../Services/Weather.ts";
+import cityTimezone from "city-timezones";
 
 
 function Contents() {
-    const {weather, setWeather} = useContext(WeatherContext) as WeatherContextInterFace
+    const {weather, setWeather, setTimezone} = useContext(WeatherContext) as WeatherContextInterFace
     const [favorites, setFavorites] = useLocalStorage("favorites", [])
     const navigate = useNavigate();
     const [user, setUser] = useState<UserInterface | null>(null);
@@ -34,7 +35,10 @@ function Contents() {
             .then((res) => {
                 if (res.status === 200) {
                     getWeather(res.data.city)
-                        .then((result) => setWeather(result))
+                        .then((result) => {
+                            setTimezone(cityTimezone.lookupViaCity(result.name).find(item=>item.iso2 === result.sys.country)?.timezone ?? "Asia/Tehran")
+                            setWeather(result)
+                        })
                 }
             })
     }

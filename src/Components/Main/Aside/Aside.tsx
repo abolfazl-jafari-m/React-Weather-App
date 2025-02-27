@@ -1,5 +1,5 @@
 import Input from "../../Base/Input/Input.tsx";
-import {KeyboardEvent, useContext, useEffect, useState} from "react";
+import {KeyboardEvent, useContext, useEffect} from "react";
 import {getWeather} from "../../../Services/Weather.ts";
 import {WeatherContext, WeatherContextInterFace} from "../../../Context/WeatherContext.tsx";
 import moment from "moment-timezone"
@@ -17,9 +17,8 @@ import cityTimezone from "city-timezones";
 
 
 function Aside() {
-    const {weather, setWeather} = useContext(WeatherContext) as WeatherContextInterFace
+    const {weather, setWeather , timezone , setTimezone} = useContext(WeatherContext) as WeatherContextInterFace
     const {setIsLoading} = useContext(LoadingContext) as LoadingContextInterface
-    const [timezone, setTimezone] = useState<string>("");
     const city = useUserLocation();
     const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
