@@ -56,7 +56,7 @@ function LoginForm() {
     }
     return (
         <div
-            className={"flex flex-col gap-10 items-center w-2/3 bg-gray-950/70 backdrop-blur-xl backdrop-brightness-50 rounded-lg shadow-black shadow-lg  p-5 font-fuzzy "}>
+            className={"flex flex-col gap-10 items-center max-lg:w-full max-lg:h-full max-lg:rounded-none w-2/3 bg-gray-950/70 backdrop-blur-xl backdrop-brightness-50 rounded-lg shadow-black shadow-lg  p-5 font-fuzzy "}>
             <h2 className={"font-bold text-4xl text-white"}>Login</h2>
             <form onSubmit={(e: FormEvent<HTMLFormElement>) => loginHandler(e)}
                   className={"w-full flex flex-col gap-10"}>
