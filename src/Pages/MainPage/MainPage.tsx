@@ -1,9 +1,9 @@
 import Aside from "../../Components/Main/Aside/Aside.tsx";
 import Contents from "../../Components/Main/Content/Contents.tsx";
-import {WeatherProvider} from "../../Context/WeatherContext.tsx";
 import {useContext} from "react";
 import {LoadingContext, LoadingContextInterface} from "../../Context/LoadingContext.tsx";
 import loading from "/images/partly-cloudy-night-snow.svg";
+import {WeatherProvider} from "../../Context/WeatherContext.tsx";
 
 
 function MainPage() {
@@ -11,7 +11,7 @@ function MainPage() {
     return (
         <WeatherProvider>
             <div
-                className={"w-full h-screen bg-[url(src/assets/images/cloudy-wallpaper.jpg)] grid grid-cols-12 bg-no-repeat bg-center bg-cover font-fuzzy text-white"}>
+                className={"w-full h-screen bg-[url(src/assets/images/cloudy-wallpaper.webp)] grid grid-cols-12 bg-no-repeat bg-center bg-cover font-fuzzy text-white"}>
                 <Aside/>
                 <Contents/>
             </div>

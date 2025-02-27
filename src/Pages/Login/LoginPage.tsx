@@ -5,10 +5,11 @@ import {LoginProvider} from "../../Context/LoginContext.tsx";
 import {Toaster} from "react-hot-toast";
 
 function LoginPage() {
+
     return (
         <LoginProvider>
             <div
-                className={"w-full h-screen bg-[url(src/assets/images/login-wallpaper.jpg)] bg-no-repeat bg-cover bg-center flex relative"}>
+                className={"w-full h-screen bg-[url(src/assets/images/login-wallpaper.webp)] bg-no-repeat bg-cover bg-center flex relative"}>
                 <div className={"w-1/2 flex items-center justify-center h-full"}>
                     <LoginForm/>
                 </div>
