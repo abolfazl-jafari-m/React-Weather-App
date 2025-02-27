@@ -6,6 +6,7 @@ import {REGEX_EMAIL, REGEX_PASSWORD} from "../../../Constants/Constants.ts";
 import {register} from "../../../Services/User.ts";
 import useLocalStorage from "../../../Hooks/useLocalStorage/useLocalStorage.ts";
 import {useNavigate} from "react-router";
+import toast from "react-hot-toast";
 
 
 function RegisterForm() {
@@ -36,7 +37,7 @@ function RegisterForm() {
         } else if (!REGEX_PASSWORD.test(rePassword)) {
             newErrors.rePassword = "Your Password have to at least 8  at least 8 characters & One digits & Special characters"
         } else if (rePassword !== password) {
-            newErrors.password = "Passwords Not the Same"
+            newErrors.rePassword = "Passwords Not the Same"
         }
 
         setErrors(newErrors);
@@ -49,11 +50,18 @@ function RegisterForm() {
         e.preventDefault();
         const {email, password, rePassword} = e.target as HTMLFormElement;
         const errors = validation(email.value, password.value, rePassword.value);
-
         if (Object.values(errors).every(item => item === "")) {
-            register(email, password).then((res) => {
+            const loadingToast = toast.loading("loading...", {
+                style: {width: '320px'}
+            })
+            register(email.value, password.value).then((res) => {
                 setToken(res.accessToken)
+                toast.success("Register was Successful", {
+                    id: loadingToast
+                })
                 navigate("/");
+            }).finally(() => {
+                toast.remove(loadingToast)
             })
         }
 

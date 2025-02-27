@@ -1,21 +1,36 @@
 import logo from "../../../assets/images/logo.png";
 import Button from "../../Base/Button/Button.tsx";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {WeatherContext, WeatherContextInterFace} from "../../../Context/WeatherContext.tsx";
 import hail from "/images/hail.svg";
 import {WeatherInterFace} from "../../../Interfaces/weather.ts";
 import useLocalStorage from "../../../Hooks/useLocalStorage/useLocalStorage.ts";
 import {IoClose} from "react-icons/io5";
+import {getUser} from "../../../Services/User.ts";
+import {UserInterface} from "../../../Interfaces/User.ts";
+import {BiLogOut} from "react-icons/bi";
+import {useNavigate} from "react-router";
 
 
 function Contents() {
     const {weather} = useContext(WeatherContext) as WeatherContextInterFace
-    const  [favorites , setFavorites] = useLocalStorage("favorites" , [])
+    const [favorites, setFavorites] = useLocalStorage("favorites", [])
+    const navigate = useNavigate();
+    const [user, setUser] = useState<UserInterface | null>(null);
     const addToFavoriteHandler = () => {
-        if(!favorites.find((item:WeatherInterFace) =>item.name ===weather?.name)){
-            setFavorites((prevState :WeatherInterFace[])=> [...prevState , weather])
+        if (!favorites.find((item: WeatherInterFace) => item.name === weather?.name)) {
+            setFavorites((prevState: WeatherInterFace[]) => [...prevState, weather])
         }
     }
+    const handleLogOut = ()=>{
+        localStorage.removeItem("token")
+        navigate("/login");
+    }
+
+    useEffect(() => {
+        getUser()
+            .then(res => setUser(res))
+    }, [])
 
     return (
         <main className={"col-span-9  h-screen  flex flex-col p-5 relative"}>
@@ -26,9 +41,13 @@ function Contents() {
                     <h1 className={"text-xl font-bold"}>NV Weather</h1>
                 </div>
                 <div className={"flex items-center gap-2"}>
-                    <p>abolfazljafari563@gmail.com</p>
-                    <span
-                        className={"p-2 rounded-full border-white border h-7 w-7 items-center flex justify-center"}>A</span>
+                    <p>{user && user?.email}</p>
+                    <Button className={"py-1 px-2 rounded-md bg-rose-900 hover:bg-rose-700 text-white cursor-pointer"}
+                            type={"button"}
+                    onClick={()=>handleLogOut()}
+                    >
+                        <BiLogOut size={"25"}/>
+                    </Button>
                 </div>
             </header>
             {
@@ -70,16 +89,19 @@ function Contents() {
             }
             <div className={" flex flex-col items-stretch gap-10 absolute right-10 top-40"}>
                 {
-                    favorites.map((favorite: WeatherInterFace)=>{
-                        return <div key={favorite.name} className={"flex items-center justify-evenly  gap-5  bg-black/50 backdrop-blur-lg rounded-md shadow shadow-black py-2 px-6"}>
+                    favorites.map((favorite: WeatherInterFace) => {
+                        return <div key={favorite.name}
+                                    className={"flex items-center justify-evenly  gap-5  bg-black/50 backdrop-blur-lg rounded-md shadow shadow-black py-2 px-6"}>
                             <h4>{favorite.name}</h4>
                             <p>{favorite.main.temp} &deg;</p>
-                            <img src={`https://openweathermap.org/img/wn/${favorite?.weather && favorite?.weather[0]?.icon}@2x.png`} className={"w-7"} alt={favorite?.weather ? favorite?.weather[0]?.main : "weather"}/>
+                            <img
+                                src={`https://openweathermap.org/img/wn/${favorite?.weather && favorite?.weather[0]?.icon}@2x.png`}
+                                className={"w-7"} alt={favorite?.weather ? favorite?.weather[0]?.main : "weather"}/>
                             <span
                                 className={"cursor-pointer"}
-                                onClick={()=>setFavorites((prevState :WeatherInterFace[])=>prevState.filter(item=> item.name !== favorite.name))}
+                                onClick={() => setFavorites((prevState: WeatherInterFace[]) => prevState.filter(item => item.name !== favorite.name))}
                             >
-                                <IoClose />
+                                <IoClose/>
                             </span>
                         </div>
                     })

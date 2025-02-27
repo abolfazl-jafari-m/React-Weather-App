@@ -2,6 +2,7 @@ import LoginForm from "../../Components/Login/LoginForm/LoginForm.tsx";
 import RegisterForm from "../../Components/Login/RegisterForm/RegisterForm.tsx";
 import Overlay from "../../Components/Login/Overlay/Overlay.tsx";
 import {LoginProvider} from "../../Context/LoginContext.tsx";
+import {Toaster} from "react-hot-toast";
 
 function LoginPage() {
     return (
@@ -16,6 +17,7 @@ function LoginPage() {
                 </div>
                 <Overlay/>
             </div>
+            <Toaster position={"top-center"} />
         </LoginProvider>
     );
 }

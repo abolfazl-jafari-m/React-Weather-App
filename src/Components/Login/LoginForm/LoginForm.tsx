@@ -6,6 +6,7 @@ import {REGEX_EMAIL} from "../../../Constants/Constants.ts";
 import {login} from "../../../Services/User.ts";
 import useLocalStorage from "../../../Hooks/useLocalStorage/useLocalStorage.ts";
 import {useNavigate} from "react-router";
+import toast from "react-hot-toast";
 
 
 function LoginForm() {
@@ -35,11 +36,19 @@ function LoginForm() {
         const {email, password} = e.target as HTMLFormElement;
         const errors = validation(email.value, password.value)
         if (Object.values(errors).every(item => item === "")) {
+            const loadingToast = toast.loading("Please Wait...", {
+                style : {width : "320px"}
+            });
             login(email.value, password.value)
                 .then((res) => {
                     setToken(res.accessToken);
+                    toast.success("login was Successful" , {
+                        id : loadingToast
+                    })
                     navigate("/");
-                });
+                }).finally(()=>{
+                    toast.remove(loadingToast)
+            });
         }
     }
     return (
