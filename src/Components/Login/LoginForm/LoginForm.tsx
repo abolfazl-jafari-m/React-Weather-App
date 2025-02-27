@@ -7,11 +7,14 @@ import {login} from "../../../Services/User.ts";
 import useLocalStorage from "../../../Hooks/useLocalStorage/useLocalStorage.ts";
 import {useNavigate} from "react-router";
 import toast from "react-hot-toast";
+import {FaEye} from "react-icons/fa";
+import {FiEyeOff} from "react-icons/fi";
 
 
 function LoginForm() {
     const {setIsLogin} = useContext(LoginContext) as LoginContextInterface
     const [errors, setErrors] = useState({email: "", password: ""})
+    const [showPass, setShowPass] = useState<boolean>(false);
 
     const [, setToken] = useLocalStorage("token", "");
     const navigate = useNavigate();
@@ -37,17 +40,17 @@ function LoginForm() {
         const errors = validation(email.value, password.value)
         if (Object.values(errors).every(item => item === "")) {
             const loadingToast = toast.loading("Please Wait...", {
-                style : {width : "320px"}
+                style: {width: "320px"}
             });
             login(email.value, password.value)
                 .then((res) => {
                     setToken(res.accessToken);
-                    toast.success("login was Successful" , {
-                        id : loadingToast
+                    toast.success("login was Successful", {
+                        id: loadingToast
                     })
                     navigate("/");
-                }).finally(()=>{
-                    toast.remove(loadingToast)
+                }).finally(() => {
+                toast.remove(loadingToast)
             });
         }
     }
@@ -72,8 +75,17 @@ function LoginForm() {
                     <div
                         className={"flex flex-col gap-2 bg-zinc-900/25 has-focus:bg-zinc-950/40 text-white border-2 border-gray-800/50 transition ease-linear duration-200 p-2 has-focus:border-black rounded-md"}>
                         <label className={"text-lg uppercase"}>Password :</label>
-                        <Input type={"password"} className={"bg-transparent py-1 px-3 rounded-md outline-none"}
-                               placeholder={"Your Password..."} name={"password"}/>
+                        <div className={"flex items-center w-full"}>
+                            <Input type={!showPass ? "password" : "text"}
+                                   className={"bg-transparent py-1 px-3 flex-1 rounded-md outline-none"}
+                                   placeholder={"Your Password..."} name={"password"}/>
+                            <div onClick={() => setShowPass(!showPass)} className={"px-2"}>
+                                {
+                                    !showPass ? <FaEye/> : <FiEyeOff className={"text-white"}/>
+                                }
+                            </div>
+                        </div>
+
                     </div>
                     <div className={"text-xs text-red-400 tracking-tighter px-2 min-h-8"}>
                         {errors.password}
