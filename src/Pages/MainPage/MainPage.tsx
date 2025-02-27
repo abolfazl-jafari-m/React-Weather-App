@@ -11,7 +11,7 @@ function MainPage() {
     return (
         <WeatherProvider>
             <div
-                className={"w-full h-screen bg-[url(./src/assets/images/cloudy-wallpaper.webp)] grid grid-cols-12 bg-no-repeat bg-center bg-cover font-fuzzy text-white"}>
+                className={"w-full h-screen bg-[url(/images/cloudy-wallpaper.webp)] grid grid-cols-12 bg-no-repeat bg-center bg-cover font-fuzzy text-white"}>
                 <Aside/>
                 <Contents/>
             </div>
