@@ -51,13 +51,13 @@ function Aside() {
     }, [city])
     return (
         <aside
-            className={"col-span-3 bg-gray-300/20 backdrop-blur-md ring ring-white shadow-lg shadow-black flex flex-col gap-10 py-8 px-6 relative"}>
+            className={"col-span-3 max-lg:col-span-5 max-xl:col-span-4 max-md:col-span-6 bg-gray-300/20 backdrop-blur-md ring ring-white shadow-lg shadow-black flex flex-col gap-10 py-8 px-6 max-sm:py-3 px-2 relative"}>
             <div className={"flex items-center border-b border-white/40 p-1 w-full justify-between"}>
                 <div className={"flex items-center gap-1.5"}>
-                    <img src={compass} alt={"location"} className={"w-9"}/>
+                    <img src={compass} alt={"location"} className={"w-9 max-sm:w-7 max-sm:hidden"}/>
                     <Input type={"text"} placeholder={"City Name + Press Enter"}
                            onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => searchHandler(e)}
-                           className={"bg-transparent text-white border-none outline-none flex-1"}/>
+                           className={"bg-transparent text-white border-none outline-none flex-1 max-sm:placeholder:text-sm"}/>
                 </div>
             </div>
             <div>
@@ -65,7 +65,7 @@ function Aside() {
                     className={"text-5xl  flex items-center gap-1 justify-center"}>{weather ? weather?.main?.temp : "-"}
                     <img src={celsius} className={"w-12"} alt={"deg"}/></span>
             </div>
-            <div className={"px-10 flex items-center justify-between"}>
+            <div className={"px-10 flex items-center justify-between max-sm:flex-col max-md:px-4"}>
                 <div className={"flex items-center gap-1"}>
                     <img src={thermometerWarmer} alt={"max-temp"} className={"w-12"}/>
                     <span className={"flex items-center gap-1"}>{weather ? weather?.main?.temp_max : "-"} &deg;</span>
@@ -76,16 +76,16 @@ function Aside() {
                 </div>
 
             </div>
-            <div className={"flex items-center justify-between px-2"}>
-                <div className={"flex items-center gap-1"}>
-                    <img src={humidity} alt={"humidity"}/>
-                    <div className={"flex flex-col gap-1"}>
+            <div className={"flex items-center justify-between px-2 max-md:flex-col max-md:w-full max-md:gap-6"}>
+                <div className={"flex items-center gap-1 max-md:w-full max-md:justify-between"}>
+                    <img src={humidity} alt={"humidity"} className={"max-md:w-14"}/>
+                    <div className={"flex flex-col gap-1 "}>
                         <h4 className={"text-2xl"}>{weather ? weather?.main?.humidity : "0"}%</h4>
                         <span className={"capitalize text-xs opacity-60"}>humidity</span>
                     </div>
                 </div>
 
-                <div className={"flex items-center gap-1"}>
+                <div className={"flex items-center gap-1 max-md:w-full max-md:justify-between"}>
                     <img src={wind} alt={"wind"} className={"w-12"}/>
                     <div className={"flex flex-col gap-1"}>
                         <h4 className={"text-2xl"}>{weather ? weather?.wind?.speed : "0"} m/h</h4>
@@ -95,7 +95,7 @@ function Aside() {
                 </div>
 
             </div>
-            <div className={"flex items-center justify-between px-6 mt-5"}>
+            <div className={"flex items-center justify-between px-6 mt-5 max-md:flex-col"}>
                 <div className={"flex flex-col items-center gap-3"}>
                     <div className={"flex items-center gap-1.5"}>
                         <h5 className={"text-lg opacity-60"}>Sunset</h5>
@@ -116,7 +116,7 @@ function Aside() {
 
                 <span>{weather ? timezone +"  "+ moment(weather.timezone).tz(timezone).format("HH:mm") : "-"}</span>
             </div>
-            <div className={"absolute bottom-2 left-2"}>
+            <div className={"absolute bottom-2 left-2 max-sm:hidden"}>
                 <span>NV Weather</span>
             </div>
         </aside>
