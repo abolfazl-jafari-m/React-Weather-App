@@ -10,10 +10,13 @@ import {getUser} from "../../../Services/User.ts";
 import {UserInterface} from "../../../Interfaces/User.ts";
 import {BiLogOut} from "react-icons/bi";
 import {useNavigate} from "react-router";
+import {FaLocationCrosshairs} from "react-icons/fa6";
+import axios from "axios";
+import {getWeather} from "../../../Services/Weather.ts";
 
 
 function Contents() {
-    const {weather} = useContext(WeatherContext) as WeatherContextInterFace
+    const {weather, setWeather} = useContext(WeatherContext) as WeatherContextInterFace
     const [favorites, setFavorites] = useLocalStorage("favorites", [])
     const navigate = useNavigate();
     const [user, setUser] = useState<UserInterface | null>(null);
@@ -22,9 +25,18 @@ function Contents() {
             setFavorites((prevState: WeatherInterFace[]) => [...prevState, weather])
         }
     }
-    const handleLogOut = ()=>{
+    const handleLogOut = () => {
         localStorage.removeItem("token")
         navigate("/login");
+    }
+    const handleUserLocation = () => {
+        axios.get("http://ip-api.com/json")
+            .then((res) => {
+                if (res.status === 200) {
+                    getWeather(res.data.city)
+                        .then((result) => setWeather(result))
+                }
+            })
     }
 
     useEffect(() => {
@@ -44,7 +56,7 @@ function Contents() {
                     <p>{user && user?.email}</p>
                     <Button className={"py-1 px-2 rounded-md bg-rose-900 hover:bg-rose-700 text-white cursor-pointer"}
                             type={"button"}
-                    onClick={()=>handleLogOut()}
+                            onClick={() => handleLogOut()}
                     >
                         <BiLogOut size={"25"}/>
                     </Button>
@@ -108,6 +120,10 @@ function Contents() {
                 }
 
             </div>
+            <Button type={"button"} onClick={handleUserLocation}
+                    className={"absolute left-8 bottom-8 bg-zinc-400 rounded-full flex items-center justify-center h-7 w-7  p-1 cursor-pointer"}>
+                <FaLocationCrosshairs className={"text-black opacity-80"}/>
+            </Button>
 
         </main>
     );
