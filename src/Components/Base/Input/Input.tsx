@@ -8,7 +8,7 @@ interface IProps {
     onChange ?: (e : ChangeEvent<HTMLInputElement>)=>void,
     placeholder :string,
     onKeyDown ?: (e : KeyboardEvent<HTMLInputElement>)=>void,
-    defaultValue ?: string
+    defaultValue ?: string,
 }
 function Input({type , className, value , name , onChange ,placeholder , onKeyDown ,defaultValue} : IProps) {
     return (
